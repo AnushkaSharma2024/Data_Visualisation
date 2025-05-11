@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 import pandas as pd
 import matplotlib
 matplotlib.use('Agg')  # Ensure no GUI backend is used
@@ -49,10 +49,11 @@ def home():
     plt.savefig("static/moving_avg_chart.png")  # Save the chart in the 'static' folder
     plt.close()
 
+    # Pass image filenames to template using url_for for dynamic URL generation
     return render_template("index.html", 
-                           chart1="voltage_chart.png", 
-                           chart2="peaks_lows_chart.png", 
-                           chart3="moving_avg_chart.png")
+                           chart1=url_for('static', filename='voltage_chart.png'), 
+                           chart2=url_for('static', filename='peaks_lows_chart.png'), 
+                           chart3=url_for('static', filename='moving_avg_chart.png'))
 
 if __name__ == "__main__":
     app.run(debug=True)
